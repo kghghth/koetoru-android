@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">koetoru</string>
     <string name="title_home">録音画面</string>
-    <string name="title_dashboard">視聴画面</string>
+    <string name="title_dashboard">視聴編集画面</string>
     <string name="title_notifications">設定画面</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="test">Test!!!!!</string>
+    <string name="moring">今日もいい天気</string>
 </resources>

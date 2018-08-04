@@ -7,6 +7,12 @@ class SettingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        setContentView(R.layout.fragment_setting)// コードからフラグメントを追加
+//        if (savedInstanceState == null) {
+//            val transaction = supportFragmentManager.beginTransaction()
+//            transaction.add(R.id.container, SettingFragment.newInstance("TOYOTA", "プリウス"))
+//            transaction.commit()
+//        }
+
     }
 }
