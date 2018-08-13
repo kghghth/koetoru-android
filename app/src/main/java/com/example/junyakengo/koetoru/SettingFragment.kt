@@ -7,6 +7,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.R.attr.data
+import android.widget.ArrayAdapter
+import android.widget.ListAdapter
+import android.widget.ListView
+import android.support.v7.app.AppCompatActivity
+import kotlinx.android.synthetic.main.fragment_setting.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,7 +33,15 @@ class SettingFragment : Fragment() {
     // Fragmentで表示するViewを作成するメソッド
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+
+        val mainFrame = inflater!!.inflate(R.layout.fragment_setting, container, false)
+        val listView = mainFrame.findViewById(R.id.listView) as ListView
+        val versionName = BuildConfig.VERSION_NAME
+        val data:Array<String> = arrayOf("アプリバージョン: " + versionName,"ご意見: Twitter(@spoon_kogepan)")
+        val adapterSet = ArrayAdapter(this.context, android.R.layout.simple_list_item_1,data)
+        listView.adapter = adapterSet
+
         // 先ほどのレイアウトをここでViewとして作成します
-        return inflater!!.inflate(R.layout.fragment_setting, container, false)
+        return mainFrame
     }
 }
