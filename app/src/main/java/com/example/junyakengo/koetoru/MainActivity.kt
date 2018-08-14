@@ -20,18 +20,16 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, RecodeFragment())
                         .commit()
-                message.setText(R.string.title_home)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, FileSelectFragment())
                         .commit()
-                message.setText(R.string.title_dashboard)
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                message.setText(R.string.title_notifications)
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, SettingFragment())
                         .commit()
@@ -44,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        message.setText("")
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, RecodeFragment())
                 .commit()
