@@ -11,4 +11,5 @@
     <string name="button">OK_ボタン</string>
     <string name="todo">TODO</string>
     <string name="todo2">TODO</string>
+    <string name="editText"></string>
 </resources>
