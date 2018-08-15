@@ -1,15 +1,17 @@
 <resources>
     <string name="app_name">koetoru</string>
-    <string name="title_home">録音画面</string>
-    <string name="title_dashboard">視聴編集画面</string>
-    <string name="title_notifications">設定画面</string>
+    <string name="title_home">録音</string>
+    <string name="title_dashboard">録音一覧</string>
+    <string name="title_notifications">設定</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="test">Test!!!!!</string>
-    <string name="moring">今日もいい天気</string>
+    <string name="moring"></string>
     <string name="button">OK_ボタン</string>
     <string name="todo">TODO</string>
     <string name="todo2">TODO</string>
     <string name="editText"></string>
+    <string name="textview">待機中</string>
+    <string name="editText2">ファイル名</string>
 </resources>

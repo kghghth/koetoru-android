@@ -3,10 +3,19 @@ package com.example.junyakengo.koetoru
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.AdapterView
+import android.os.Environment.getExternalStorageDirectory
+import android.util.Log
+import java.io.File
+
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,11 +34,42 @@ private const val ARG_PARAM2 = "param2"
  */
 class FileSelectFragment : Fragment() {
 
+    private val songList = ArrayList<String>()
+    private val lv: ListView? = null
+    val FILENAME = "/sdcard/Movies"
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+
+        val mainFrame = inflater!!.inflate(R.layout.fragment_file_select, container, false)
+        val listView = mainFrame.findViewById(R.id.listView) as ListView
+        val sdPath = getExternalStorageDirectory().getPath()
+
+        Log.d(tag, sdPath)
+        val files = File(FILENAME).listFiles()
+        if (files != null) {
+            for (i in 0 until files.size) {
+                if (files[i].isFile() && files[i].getName().endsWith(".mp3")) {
+                    songList.add(files[i].getName())
+                }
+            }
+
+            val adapter = ArrayAdapter<String>(this.context, android.R.layout.simple_expandable_list_item_1, songList)
+            listView.adapter = adapter
+
+            listView.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+//                val listView = parent as ListView
+//                val item = listView.getItemAtPosition(position) as String
+//                showItem(item)
+                Log.d(tag, "Select!!!")
+            })
+        }
         // 先ほどのレイアウトをここでViewとして作成します
-        return inflater!!.inflate(R.layout.fragment_file_select, container, false)
+        return mainFrame
     }
+
+
+
 //    // TODO: Rename and change types of parameters
 //    private var param1: String? = null
 //    private var param2: String? = null

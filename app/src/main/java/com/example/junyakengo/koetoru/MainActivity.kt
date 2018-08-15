@@ -20,19 +20,21 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, RecodeFragment())
                         .commit()
+                this.title = "録音"
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, FileSelectFragment())
                         .commit()
-
+                this.title = "録音一覧"
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.container, SettingFragment())
                         .commit()
+                this.title = "設定"
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, RecodeFragment())
                 .commit()
+        this.title = "録音"
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 }
