@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/moring"
-        tools:text="" />
+        tools:text="今日も1日いい天気" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="456dp" />
 
 </FrameLayout>

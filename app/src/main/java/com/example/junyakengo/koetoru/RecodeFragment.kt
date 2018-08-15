@@ -4,15 +4,13 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import kotlinx.android.synthetic.main.fragment_recode.*
-import android.media.AudioFormat
-import android.media.AudioRecord
 import android.media.MediaRecorder
 import kotlin.math.max
 import java.nio.file.Files.exists
@@ -21,9 +19,8 @@ import android.widget.EditText
 import java.io.IOException
 import java.io.File
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
-import android.support.v4.app.DialogFragment
+import java.util.concurrent.Executors
+import kotlin.system.measureTimeMillis
 
 
 
@@ -51,6 +48,10 @@ class RecodeFragment : Fragment() {
     var editText: EditText? = null
     var textView: TextView? = null
 
+    val handler = Handler()
+    var timeValue = 0
+    var runnable: Runnable? = null
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -63,6 +64,19 @@ class RecodeFragment : Fragment() {
         this.editText = mainFrame.findViewById(R.id.editText) as EditText
         this.recodeButton!!.setOnClickListener{tapStartRecoding()}
         this.playButton!!.setOnClickListener{tapPlayButton()}
+
+
+        runnable = object : Runnable {
+            override fun run() {
+                timeValue++
+
+                timeToText(timeValue)?.let {
+                    textView!!.text = "録音中: " + it
+                }
+                handler.postDelayed(this, 1000)
+            }
+        }
+
         return mainFrame
     }
 
@@ -117,6 +131,8 @@ class RecodeFragment : Fragment() {
         this.recodeButton!!.setImageResource(R.drawable.stop)
         recodingFlag = true
         this.textView!!.text = "録音中"
+        handler.post(runnable)
+
     }
 
     fun stopRecording() {
@@ -126,5 +142,20 @@ class RecodeFragment : Fragment() {
         recodingFlag = false
         this.textView!!.text = "待機中"
         this.recodeButton!!.setImageResource(R.drawable.recoding)
+        handler.removeCallbacks(runnable)
+        timeValue = 0
+    }
+
+    private fun timeToText(time: Int = 0): String? {
+        return if (time < 0) {
+            null
+        } else if (time == 0) {
+            "00:00:00"
+        } else {
+            val h = time / 3600
+            val m = time % 3600 / 60
+            val s = time % 60
+            "%1$02d:%2$02d:%3$02d".format(h, m, s)
+        }
     }
 }
