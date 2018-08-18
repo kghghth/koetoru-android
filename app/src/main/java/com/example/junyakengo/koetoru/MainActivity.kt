@@ -8,7 +8,8 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.ArrayAdapter
-import android.widget.ListView
+import java.io.File
+import android.os.Environment
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val dir = "${Environment.getExternalStorageDirectory()}/Koetoru"
+        File(dir).mkdirs()
         setContentView(R.layout.activity_main)
         message.setText("")
         supportFragmentManager.beginTransaction()

@@ -18,6 +18,8 @@ import android.app.AlertDialog
 import android.media.MediaPlayer
 import android.widget.Toast
 import android.media.AudioManager
+import android.content.Context
+import java.io.FileOutputStream
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,7 +38,7 @@ private const val ARG_PARAM2 = "param2"
 class RecodeFragment : Fragment() {
     private var recodingFlag = false
     private var playingFlag = false
-    val FILENAME = Environment.getExternalStorageDirectory().getPath() + "/"
+    val FILENAME = Environment.getExternalStorageDirectory().getPath() + "/Koetoru/"
     var recorder: MediaRecorder = MediaRecorder()
     private var mediaPlayer: MediaPlayer? = null
     var recodeButton: ImageButton? = null
@@ -206,6 +208,7 @@ class RecodeFragment : Fragment() {
         this.recodeButton!!.setImageResource(R.drawable.recoding)
         handler.removeCallbacks(runnable)
         timeValue = 0
+
     }
 
     // AudioPlay Action

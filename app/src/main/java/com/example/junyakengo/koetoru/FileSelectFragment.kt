@@ -51,7 +51,7 @@ class FileSelectFragment : Fragment() {
     private var listView: ListView? = null
     private var beforeListNumber = 0
     private var beforeListView: View? = null
-    val FILENAME = Environment.getExternalStorageDirectory().getPath()
+    val FILENAME = Environment.getExternalStorageDirectory().getPath() + "/Koetoru"
 
     private var playingFlag = false
     private var longFlag = false
