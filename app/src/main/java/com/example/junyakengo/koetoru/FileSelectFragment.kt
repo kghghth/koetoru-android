@@ -51,7 +51,7 @@ class FileSelectFragment : Fragment() {
     private var listView: ListView? = null
     private var beforeListNumber = 0
     private var beforeListView: View? = null
-    val FILENAME = "/sdcard/Movies/"
+    val FILENAME = Environment.getExternalStorageDirectory().getPath()
 
     private var playingFlag = false
     private var longFlag = false
@@ -116,7 +116,7 @@ class FileSelectFragment : Fragment() {
                 .setTitle(selectedItem + "を削除しますか？")
                 .setMessage("削除するならOKを押下してください。")
                 .setPositiveButton("OK", { dialogInterface: DialogInterface, i: Int ->
-                    val saveFileName = FILENAME + selectedItem
+                    val saveFileName = FILENAME + "/" + selectedItem
                     var mediafile: File? = File(saveFileName)
                     if (mediafile!!.exists()) {
                         //ファイルが存在する場合は削除する
@@ -131,11 +131,6 @@ class FileSelectFragment : Fragment() {
                 .setNegativeButton("CANCEL", null)
                 .show()
     }
-
-    fun deleteFile() {
-
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -160,7 +155,7 @@ class FileSelectFragment : Fragment() {
         mediaPlayer = MediaPlayer()
 
         //音楽ファイル名, あるいはパス
-        val saveFileName = FILENAME + playFileName
+        val saveFileName = FILENAME + "/" + playFileName
 
         Log.d(tag, "ファイル名" + saveFileName)
         // assetsから mp3 ファイルを読み込み

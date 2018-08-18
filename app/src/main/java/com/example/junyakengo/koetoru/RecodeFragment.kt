@@ -36,7 +36,7 @@ private const val ARG_PARAM2 = "param2"
 class RecodeFragment : Fragment() {
     private var recodingFlag = false
     private var playingFlag = false
-    val FILENAME = "/sdcard/Movies/"
+    val FILENAME = Environment.getExternalStorageDirectory().getPath() + "/"
     var recorder: MediaRecorder = MediaRecorder()
     private var mediaPlayer: MediaPlayer? = null
     var recodeButton: ImageButton? = null
@@ -119,9 +119,7 @@ class RecodeFragment : Fragment() {
     fun tapStartRecoding() {
 
         if (recodingFlag) {
-            Log.d(tag, "Stop Action")
             stopRecording()
-            Log.d(tag, "Stop OK!!!")
         } else {
             Log.d(tag, "Start Action")
             if (this.editText!!.text.isEmpty()) {
