@@ -1,5 +1,6 @@
 package com.example.junyakengo.koetoru
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
@@ -21,6 +22,8 @@ import java.io.IOException
 import android.provider.SyncStateContract.Helpers.update
 import android.content.ContentValues
 import android.content.DialogInterface
+import android.content.pm.PackageManager
+import android.support.v4.content.ContextCompat
 import com.example.junyakengo.koetoru.R.id.textView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.widget.LinearLayout
@@ -170,8 +173,22 @@ class FileSelectFragment : Fragment() {
         return fileCheck
     }
 
+    fun notAccessAction() {
+        AlertDialog.Builder(activity)
+                .setTitle("マイクとフォルダ等の利用許可をしてください。")
+                .setMessage("設定 > アプリ > koetoru > 許可で全て許可してください。")
+                .setPositiveButton("OK", null)
+                .show()
+    }
+
     // AudioPlay Action
     private fun audioPlay(playFileName: String, playListView: View) {
+        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this.context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this.context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            notAccessAction()
+            return
+        }
 
         if (mediaPlayer == null) {
             // audio ファイルを読出し

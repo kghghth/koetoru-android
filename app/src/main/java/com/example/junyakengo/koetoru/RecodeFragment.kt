@@ -1,5 +1,6 @@
 package com.example.junyakengo.koetoru
 
+import android.Manifest
 import android.util.Log
 import android.os.Bundle
 import android.os.Handler
@@ -19,6 +20,9 @@ import android.media.MediaPlayer
 import android.widget.Toast
 import android.media.AudioManager
 import android.content.Context
+import android.content.pm.PackageManager
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import java.io.FileOutputStream
 
 // TODO: Rename parameter arguments, choose names that match
@@ -103,9 +107,21 @@ class RecodeFragment : Fragment() {
                 .show()
     }
 
+    fun notAccessAction() {
+        AlertDialog.Builder(activity)
+                .setTitle("マイクとフォルダ等の利用許可をしてください。")
+                .setMessage("設定 > アプリ > koetoru > 許可で全て許可してください。")
+                .setPositiveButton("OK", null)
+                .show()
+    }
+
     //Button Action
     fun tapPlayButton() {
-
+        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this.context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            notAccessAction()
+            return
+        }
         if (playingFlag) {
             audioStop()
         } else {
@@ -119,6 +135,12 @@ class RecodeFragment : Fragment() {
     }
 
     fun tapStartRecoding() {
+        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this.context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            notAccessAction()
+            return
+        }
+
 
         if (recodingFlag) {
             stopRecording()
