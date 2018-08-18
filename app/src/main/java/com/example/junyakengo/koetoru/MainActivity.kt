@@ -1,6 +1,7 @@
 package com.example.junyakengo.koetoru
 
 import android.content.Intent
+import android.media.AudioManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, RecodeFragment())
                 .commit()
         this.title = "録音"
+        // 音量調整を端末のボタンに任せる
+        setVolumeControlStream(AudioManager.STREAM_MUSIC)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 }

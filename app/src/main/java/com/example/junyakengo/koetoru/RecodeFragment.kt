@@ -13,20 +13,11 @@ import android.media.MediaRecorder
 import android.widget.EditText
 import java.io.IOException
 import java.io.File
+import android.os.Environment
 import android.app.AlertDialog
 import android.media.MediaPlayer
 import android.widget.Toast
 import android.media.AudioManager
-import android.widget.Button
-import android.content.res.AssetFileDescriptor
-
-
-
-
-
-
-
-
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +35,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class RecodeFragment : Fragment() {
     private var recodingFlag = false
+    private var playingFlag = false
     val FILENAME = "/sdcard/Movies/"
     var recorder: MediaRecorder = MediaRecorder()
     private var mediaPlayer: MediaPlayer? = null
@@ -69,13 +61,17 @@ class RecodeFragment : Fragment() {
         this.recodeButton!!.setOnClickListener{tapStartRecoding()}
         this.playButton!!.setOnClickListener{tapPlayButton()}
 
-
         runnable = object : Runnable {
             override fun run() {
                 timeValue++
 
                 timeToText(timeValue)?.let {
-                    textView!!.text = "録音中: " + it
+
+                    if (playingFlag) {
+                        textView!!.text = "再生中: " + it
+                    } else if (recodingFlag) {
+                        textView!!.text = "録音中: " + it
+                    }
                 }
                 handler.postDelayed(this, 1000)
             }
@@ -84,7 +80,39 @@ class RecodeFragment : Fragment() {
         return mainFrame
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("onDestroy", "onDestroy Start")
+        if (playingFlag) {
+            audioStop()
+        } else if (recodingFlag) {
+            Log.d(tag, "Stop Action")
+            stopRecording()
+            Log.d(tag, "Stop OK!!!")
+        }
+    }
+
+
+    fun notFileNameAction() {
+        AlertDialog.Builder(activity)
+                .setTitle("ファイル名が空です")
+                .setMessage("ファイル名を入力してから、最後マイクボタンを押下してください")
+                .setPositiveButton("OK", null)
+                .show()
+    }
+
+    //Button Action
     fun tapPlayButton() {
+
+        if (playingFlag) {
+            audioStop()
+        } else {
+            if (this.editText!!.text.isEmpty()) {
+                notFileNameAction()
+            } else {
+                audioPlay()
+            }
+        }
 
     }
 
@@ -97,11 +125,7 @@ class RecodeFragment : Fragment() {
         } else {
             Log.d(tag, "Start Action")
             if (this.editText!!.text.isEmpty()) {
-                AlertDialog.Builder(activity)
-                        .setTitle("ファイル名が空です")
-                        .setMessage("ファイル名を入力してから、最後マイクボタンを押下してください")
-                        .setPositiveButton("OK", null)
-                        .show()
+                notFileNameAction()
             } else {
                 startRecording()
             }
@@ -109,7 +133,43 @@ class RecodeFragment : Fragment() {
         }
     }
 
+    // タイマーカウント
+    private fun timeToText(time: Int = 0): String? {
+        return if (time < 0) {
+            null
+        } else if (time == 0) {
+            "00:00:00"
+        } else {
+            val h = time / 3600
+            val m = time % 3600 / 60
+            val s = time % 60
+            "%1$02d:%2$02d:%3$02d".format(h, m, s)
+        }
+    }
 
+    private fun audioSetup(): Boolean {
+        var fileCheck = false
+
+        // インタンスを生成
+        mediaPlayer = MediaPlayer()
+
+        //音楽ファイル名, あるいはパス
+        val saveFileName = FILENAME + this.editText!!.text + ".mp3"
+
+        Log.d(tag, "ファイル名" + saveFileName)
+        // assetsから mp3 ファイルを読み込み
+        try {
+            mediaPlayer!!.setDataSource(saveFileName)
+            mediaPlayer!!.prepare()
+            fileCheck = true
+        } catch (e1: IOException) {
+            e1.printStackTrace()
+        }
+
+        return fileCheck
+    }
+
+    // Recording Action
     fun startRecording() {
         val saveFileName = FILENAME + this.editText!!.text + ".mp3"
         var mediafile: File? = File(saveFileName)
@@ -150,63 +210,20 @@ class RecodeFragment : Fragment() {
         timeValue = 0
     }
 
-    private fun timeToText(time: Int = 0): String? {
-        return if (time < 0) {
-            null
-        } else if (time == 0) {
-            "00:00:00"
-        } else {
-            val h = time / 3600
-            val m = time % 3600 / 60
-            val s = time % 60
-            "%1$02d:%2$02d:%3$02d".format(h, m, s)
-        }
-    }
-
-    private fun audioSetup(): Boolean {
-        var fileCheck = false
-
-        // インタンスを生成
-        mediaPlayer = MediaPlayer()
-
-        //音楽ファイル名, あるいはパス
-        val filePath = "music.mp3"
-
-        // assetsから mp3 ファイルを読み込み
-        try {
-            getAssets().openFd(filePath).use({ afdescripter ->
-                // MediaPlayerに読み込んだ音楽ファイルを指定
-                mediaPlayer!!.setDataSource(afdescripter.getFileDescriptor(),
-                        afdescripter.getStartOffset(),
-                        afdescripter.getLength())
-                // 音量調整を端末のボタンに任せる
-                setVolumeControlStream(AudioManager.STREAM_MUSIC)
-                mediaPlayer!!.prepare()
-                fileCheck = true
-            })
-        } catch (e1: IOException) {
-            e1.printStackTrace()
-        }
-
-        return fileCheck
-    }
-
+    // AudioPlay Action
     private fun audioPlay() {
 
         if (mediaPlayer == null) {
             // audio ファイルを読出し
             if (audioSetup()) {
-                Toast.makeText(getApplication(), "Rread audio file", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.activity.getApplication(), "Rread audio file", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(getApplication(), "Error: read audio file", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.activity.getApplication(), "Error: read audio file", Toast.LENGTH_SHORT).show()
+                this.playButton!!.setImageResource(R.drawable.stop2)
+                playingFlag = true
+                this.textView!!.text = "再生失敗"
                 return
             }
-        } else {
-            // 繰り返し再生する場合
-            mediaPlayer!!.stop()
-            mediaPlayer!!.reset()
-            // リソースの解放
-            mediaPlayer!!.release()
         }
 
         // 再生する
@@ -217,6 +234,11 @@ class RecodeFragment : Fragment() {
             Log.d("debug", "end of audio")
             audioStop()
         })
+
+        this.playButton!!.setImageResource(R.drawable.stop2)
+        playingFlag = true
+        this.textView!!.text = "再生中"
+        handler.post(runnable)
     }
 
     private fun audioStop() {
@@ -228,5 +250,10 @@ class RecodeFragment : Fragment() {
         mediaPlayer!!.release()
 
         mediaPlayer = null
+        this.playButton!!.setImageResource(R.drawable.play)
+        playingFlag = false
+        this.textView!!.text = "待機中"
+        handler.removeCallbacks(runnable)
+        timeValue = 0
     }
 }
