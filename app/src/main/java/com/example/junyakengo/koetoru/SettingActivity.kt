@@ -1,4 +1,4 @@
-package com.example.junyakengo.koetoru
+package com.junyakengo.koetoru
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

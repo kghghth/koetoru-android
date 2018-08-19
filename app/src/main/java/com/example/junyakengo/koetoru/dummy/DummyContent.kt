@@ -1,4 +1,4 @@
-package com.example.junyakengo.koetoru.dummy
+package com.junyakengo.koetoru.dummy
 
 import java.util.ArrayList
 import java.util.HashMap

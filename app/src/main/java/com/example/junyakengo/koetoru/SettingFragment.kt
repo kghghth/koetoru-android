@@ -1,4 +1,4 @@
-package com.example.junyakengo.koetoru
+package com.junyakengo.koetoru
 
 import android.content.Context
 import android.net.Uri

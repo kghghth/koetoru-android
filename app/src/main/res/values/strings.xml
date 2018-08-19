@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">koetoru</string>
+    <string name="app_name">コエトル</string>
     <string name="title_home">録音</string>
     <string name="title_dashboard">録音一覧</string>
     <string name="title_notifications">設定</string>

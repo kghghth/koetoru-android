@@ -1,4 +1,4 @@
-package com.example.junyakengo.koetoru
+package com.junyakengo.koetoru
 
 import android.Manifest
 import android.app.AlertDialog
@@ -24,12 +24,12 @@ import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.support.v4.content.ContextCompat
-import com.example.junyakengo.koetoru.R.id.textView
+import com.junyakengo.koetoru.R.id.textView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.AdapterView
-import com.example.junyakengo.koetoru.R.id.listView
+import com.junyakengo.koetoru.R.id.listView
 import kotlin.math.ceil
 
 
